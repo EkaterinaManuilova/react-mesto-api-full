@@ -26,15 +26,17 @@ const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
   'localhost:3000',
+  'http://localhost:3000/',
+  'http;//mestofront.students.nomoredomains.xyz',
+  'http;//api.mestofront.students.nomoredomains.xyz',
 ];
 
-// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { origin } = req.headers;
 
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
   }
 
   const { method } = req;
@@ -46,7 +48,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     return res.end();
   }
-  next();
+  return next();
 });
 
 app.use(limiter);
