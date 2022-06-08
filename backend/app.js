@@ -29,6 +29,8 @@ const allowedCors = [
   'http://localhost:3000/',
   'http://mestofront.students.nomoredomains.xyz',
   'http://api.mestofront.students.nomoredomains.xyz',
+  'https://mestofront.students.nomoredomains.xyz',
+  'https://api.mestofront.students.nomoredomains.xyz',
 ];
 
 app.use((req, res, next) => {
