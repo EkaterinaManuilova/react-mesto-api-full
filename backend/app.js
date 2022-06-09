@@ -22,36 +22,44 @@ const limiter = rateLimit({
   max: 100,
 });
 
-const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-  'localhost:3000',
-  'http://localhost:3000/',
-  'http://mestofront.students.nomoredomains.xyz/',
-  'http://api.mestofront.students.nomoredomains.xyz/',
-  'https://mestofront.students.nomoredomains.xyz/',
-  'https://api.mestofront.students.nomoredomains.xyz/',
-];
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
 
-app.use((req, res, next) => {
-  const { origin } = req.headers;
+app.use(cors(corsOptions));
 
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Credentials', true);
-  }
+// const allowedCors = [
+//   'https://praktikum.tk',
+//   'http://praktikum.tk',
+//   'localhost:3000',
+//   'http://localhost:3000/',
+//   'http://mestofront.students.nomoredomains.xyz/',
+//   'http://api.mestofront.students.nomoredomains.xyz/',
+//   'https://mestofront.students.nomoredomains.xyz/',
+//   'https://api.mestofront.students.nomoredomains.xyz/',
+// ];
 
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  const requestHeaders = req.headers['access-control-request-headers'];
+// app.use((req, res, next) => {
+//   const { origin } = req.headers;
 
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.end();
-  }
-  return next();
-});
+//   if (allowedCors.includes(origin)) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Credentials', true);
+//   }
+
+//   const { method } = req;
+//   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+//   const requestHeaders = req.headers['access-control-request-headers'];
+
+//   if (method === 'OPTIONS') {
+//     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+//     res.header('Access-Control-Allow-Headers', requestHeaders);
+//     return res.end();
+//   }
+//   return next();
+// });
 
 app.use(limiter);
 
