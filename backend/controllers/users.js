@@ -143,7 +143,7 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         sameSite: true,
       })
-        .send({ message: 'Авторизация прошла успешно' });
+        .send({ token, message: 'Авторизация прошла успешно' });
     })
     .catch(() => {
       next(new UnauthorizedError('Не правильные почта или пароль'));
