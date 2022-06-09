@@ -138,12 +138,12 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-        sameSite: true,
-      })
-        .send({ user, token, message: 'Авторизация прошла успешно' });
+      // res.cookie('jwt', token, {
+      //   maxAge: 3600000 * 24 * 7,
+      //   httpOnly: true,
+      //   sameSite: true,
+      // })
+      res.send({ user, token, message: 'Авторизация прошла успешно' });
     })
     .catch(() => {
       next(new UnauthorizedError('Не правильные почта или пароль'));
