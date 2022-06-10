@@ -87,10 +87,7 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
       }
-      return res.status(200).send({
-        name: user.name,
-        about: user.about,
-      });
+      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -115,9 +112,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
       }
-      return res.status(200).send({
-        avatar: user.avatar,
-      });
+      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -143,7 +138,7 @@ module.exports.login = (req, res, next) => {
       //   httpOnly: true,
       //   sameSite: true,
       // })
-      res.send({ user, token, message: 'Авторизация прошла успешно' });
+      res.send({ token });
     })
     .catch(() => {
       next(new UnauthorizedError('Не правильные почта или пароль'));
