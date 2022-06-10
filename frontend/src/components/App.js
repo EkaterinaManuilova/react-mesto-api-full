@@ -34,7 +34,10 @@ function App() {
   const [emailAuthorized, setEmailAuthorized] = useState("");
   const history = useHistory();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    handleTokenCheck();
+    if (loggedIn) {
+      history.push('/');
     Promise.all([api.getProfile(), api.getInitialCards()])
       .then(([profileData, cardsData]) => {
         const data = {
@@ -47,7 +50,9 @@ function App() {
         setCards(cardsData);
       })
       .catch((err) => console.log(err));
-  }, []);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -104,7 +109,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -181,17 +186,17 @@ function App() {
   //   };
   // }, [overlayCloseFunction]);
 
-  useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
-      return;
-    }
-    history.push("/signin");
-  }, [history, loggedIn]);
-
-  useEffect(() => {
-    handleTokenCheck();
-  }, []);
+  // useEffect(() => {
+  //   handleTokenCheck();
+  // }, []);
+  
+  // useEffect(() => {
+  //   if (loggedIn) {
+  //     history.push("/");
+  //     return;
+  //   }
+  //   history.push("/signin");
+  // }, [history, loggedIn]);
 
   function handleRegister(email, password) {
     auth
@@ -215,8 +220,10 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem("jwt", data.token);
+          setEmailAuthorized(data.user.email);
+          history.push('/');
+          // handleTokenCheck();
           setLoggedIn(true);
-          handleTokenCheck();
         }
       })
       .catch((err) => console.log(err));
@@ -225,13 +232,15 @@ function App() {
   function handleTokenCheck() {
     const token = localStorage.getItem("jwt");
     if (token) {
+      setLoggedIn(true);
       auth
         .checkToken(token)
         .then((res) => {
           if (res) {
-            setLoggedIn(true);
+          setEmailAuthorized(res.email);
           }
-          setEmailAuthorized(res.data.email);
+
+          history.push('/');
         })
         .catch((err) => console.log(err));
     }
@@ -240,6 +249,7 @@ function App() {
   function handleLogOut() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
+    setCurrentUser({});
   }
 
   return (

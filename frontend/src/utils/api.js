@@ -1,7 +1,14 @@
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    // this._headers = options.headers;
+  }
+
+  get _headers() {
+    return {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    }
   }
   _getResponseData(res) {
     if (!res.ok) {
@@ -46,7 +53,7 @@ class Api {
     }).then(this._getResponseData);
   }
   changeLikeCardStatus(id, cardLikeStatus) {
-    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
+    return fetch(`${this._baseUrl}/cards/${id}/likes/`, {
       method: cardLikeStatus ? "PUT" : "DELETE",
       headers: this._headers,
     }).then(this._getResponseData);
@@ -62,12 +69,13 @@ class Api {
   }
 }
 
+// const token = localStorage.getItem("jwt");
 const api = new Api({
   baseUrl: "https://api.mestofront.students.nomoredomains.xyz",
-  headers: {
-    authorization: `Bearer ${localStorage.getItem('jwt')}`,
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   Authorization: `Bearer ${token}`,
+  //   "Content-Type": "application/json",
+  // },
 });
 
 export default api;
