@@ -220,7 +220,7 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem("jwt", data.token);
-          setEmailAuthorized(data.user.email);
+          setEmailAuthorized(data.email);
           history.push('/');
           // handleTokenCheck();
           setLoggedIn(true);
