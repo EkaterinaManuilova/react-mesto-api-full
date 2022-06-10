@@ -1,7 +1,14 @@
 class Auth {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    // this._headers = options.headers;
+  }
+
+  get _headers() {
+    return {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    }
   }
 
   _getResponseData(res) {
@@ -37,7 +44,7 @@ class Auth {
       method: "GET",
       headers: {
         ...this._headers,
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
       },
     }).then(this._getResponseData);
   }
@@ -45,7 +52,7 @@ class Auth {
 
 const auth = new Auth({
   baseUrl: "https://api.mestofront.students.nomoredomains.xyz",
-  headers: { "Content-Type": "application/json" },
+  // headers: { "Content-Type": "application/json" },
 });
 
 export default auth;
