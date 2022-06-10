@@ -102,7 +102,7 @@ app.use('/users', auth, require('./routes/users'));
 
 app.use('/cards', auth, require('./routes/card'));
 
-app.all('*', auth, (req, res, next) => {
+app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Страница не  найдена'));
 });
 
