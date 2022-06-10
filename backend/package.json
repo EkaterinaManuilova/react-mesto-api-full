@@ -1,5 +1,5 @@
 {
-  "name": "express-mesto-gha",
+  "name": "api-mesto",
   "version": "1.0.0",
   "description": "Бэкенд для приложения Mesto",
   "main": "app.js",
