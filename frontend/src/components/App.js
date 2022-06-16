@@ -47,7 +47,7 @@ function App() {
           _id: profileData._id,
         };
         setCurrentUser(data);
-        setCards(cardsData);
+        setCards(cardsData.reverse());
       })
       .catch((err) => console.log(err));
     }
